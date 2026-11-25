@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robotics Coding Projects | Sam Scheinbach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header wrap">
+    <a class="logo" href="../index.html">sam.scheinbach</a>
+    <nav>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">← All projects</a>
+
+    <section class="project-hero">
+      <div class="eyebrow">ECE 217 · Robot Motion Planning and Manipulation</div>
+      <h1>Robotics Coding Projects</h1>
+      <p class="lead">Two planning systems written in C++ with ROS2: path planners that move a mobile robot through cluttered maps, and an inverse kinematics solver that drives a six joint robot arm to a target pose.</p>
+      <dl class="facts">
+        <div><dt>Course</dt><dd>ECE 217 Robot Motion Planning and Manipulation</dd></div>
+        <div><dt>Languages</dt><dd>C++</dd></div>
+        <div><dt>Tools</dt><dd>ROS2, RViz, Boost program_options</dd></div>
+      </dl>
+    </section>
+
+    <div class="prose">
+      <h2>Project 1: RRT and A* path planning</h2>
+      <p>I implemented two motion planners for a differential drive robot, modeled as a cylinder of radius 0.25 m moving in SE(2), so each state is a position and a heading. Both run as ROS2 service servers behind the same custom PlanningQuery service. A client node loads an occupancy grid map, reads the start and goal poses from the command line, and requests a plan. The path is then published for display in RViz.</p>
+      <p>The RRT planner grows a tree from the start by sampling random points and extending toward them in 1 m steps, with a 10% goal bias that pulls the tree toward the goal. Collision checking inflates the robot's footprint onto the map grid, and the distance metric adds the heading change needed to reach a node to the straight line distance, which favors smoother paths. The A* planner searches a 0.5 m grid with a heuristic of straight line distance plus the rotation needed to face the goal, which never overestimates the remaining cost, so the search stays optimal at the grid's resolution.</p>
+      <p>Both planners found collision free paths on all three test maps, each in under 0.03 seconds against a 10 second budget. A* produced lower total cost on every map, mainly because it accumulated far less rotation than RRT's randomly sampled paths.</p>
+    </div>
+
+    <div class="prose" style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 15px; margin: 24px 0;">
+        <thead>
+          <tr style="border-bottom: 2px solid #16181A; text-align: left;">
+            <th style="padding: 8px 12px 8px 0;">Map</th>
+            <th style="padding: 8px 12px;">Planner</th>
+            <th style="padding: 8px 12px;">Time (s)</th>
+            <th style="padding: 8px 12px;">Distance (m)</th>
+            <th style="padding: 8px 12px;">Rotation (rad)</th>
+            <th style="padding: 8px 0 8px 12px;">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">1</td><td style="padding: 8px 12px;">RRT</td><td style="padding: 8px 12px;">0.0234</td><td style="padding: 8px 12px;">47.25</td><td style="padding: 8px 12px;">14.52</td><td style="padding: 8px 0 8px 12px;">61.77</td></tr>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">1</td><td style="padding: 8px 12px;">A*</td><td style="padding: 8px 12px;">0.0014</td><td style="padding: 8px 12px;">45.63</td><td style="padding: 8px 12px;">3.14</td><td style="padding: 8px 0 8px 12px;">48.77</td></tr>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">2</td><td style="padding: 8px 12px;">RRT</td><td style="padding: 8px 12px;">0.0077</td><td style="padding: 8px 12px;">55.23</td><td style="padding: 8px 12px;">19.99</td><td style="padding: 8px 0 8px 12px;">75.21</td></tr>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">2</td><td style="padding: 8px 12px;">A*</td><td style="padding: 8px 12px;">0.0023</td><td style="padding: 8px 12px;">48.41</td><td style="padding: 8px 12px;">7.07</td><td style="padding: 8px 0 8px 12px;">55.47</td></tr>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">3</td><td style="padding: 8px 12px;">RRT</td><td style="padding: 8px 12px;">0.0015</td><td style="padding: 8px 12px;">43.38</td><td style="padding: 8px 12px;">13.49</td><td style="padding: 8px 0 8px 12px;">56.87</td></tr>
+          <tr style="border-bottom: 1px solid #C9CED2;"><td style="padding: 8px 12px 8px 0;">3</td><td style="padding: 8px 12px;">A*</td><td style="padding: 8px 12px;">0.0006</td><td style="padding: 8px 12px;">40.54</td><td style="padding: 8px 12px;">2.36</td><td style="padding: 8px 0 8px 12px;">42.89</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size: 14px; color: #4A5056; margin-top: -8px;">Cost is distance plus rotation, weighting 1 m the same as 1 rad. Every run went from (−20, 0, 0) to (20, 0, 0).</p>
+    </div>
+
+    <div class="gallery" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      <figure>
+        <img src="../images/coding-216-217/rrt-map1.png" alt="RRT path from the red start to the green goal threading between two large obstacles on Map 1" style="aspect-ratio: 1 / 1;">
+        <figcaption>RRT, Map 1: cost 61.77.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/astar-map1.png" alt="A* path on Map 1, smoother and more direct than the RRT path" style="aspect-ratio: 1 / 1;">
+        <figcaption>A*, Map 1: cost 48.77.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/rrt-map2.png" alt="RRT path weaving through many small circular obstacles on Map 2" style="aspect-ratio: 1 / 1;">
+        <figcaption>RRT, Map 2: cost 75.21.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/astar-map2.png" alt="A* path through the small circular obstacles on Map 2" style="aspect-ratio: 1 / 1;">
+        <figcaption>A*, Map 2: cost 55.47.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/rrt-map3.png" alt="RRT path between large circular obstacles on Map 3" style="aspect-ratio: 1 / 1;">
+        <figcaption>RRT, Map 3: cost 56.87.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/astar-map3.png" alt="A* path between large circular obstacles on Map 3" style="aspect-ratio: 1 / 1;">
+        <figcaption>A*, Map 3: cost 42.89.</figcaption>
+      </figure>
+    </div>
+
+    <div class="prose">
+      <h2>Project 2: Inverse kinematics for a 6 DOF arm</h2>
+      <p>I built a manipulation planner for a six joint anthropomorphic arm with a spherical wrist, modeled with Denavit-Hartenberg parameters and animated in RViz. A client node sends the arm's current joint angles and a goal pose, given as a position and a unit quaternion, through a custom ManipulationQuery service, and a server node solves for the joint angles that reach it.</p>
+      <p>The server uses the unit quaternion formulation of inverse kinematics from Siciliano's <em>Robotics: Modelling, Planning and Control</em>. Each iteration computes forward kinematics, converts the end effector's rotation matrix to a quaternion, stacks the position and quaternion orientation errors into a six dimensional error vector, and computes the geometric Jacobian. A damped least squares update, which stays stable near singular configurations, then sets the joint velocities. A hemisphere check keeps the orientation error pointing the right way, and if the error stops improving for 3000 iterations, the solver randomizes the joints to escape the local minimum while keeping the best solution found so far.</p>
+      <p>On the assignment's test case, the solver converged at iteration 1328, well inside the 5 second limit. Position and orientation error fell from 1.1458 and 0.6210 to below the 0.001 tolerance.</p>
+    </div>
+
+    <div class="gallery" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); align-items: start;">
+      <figure>
+        <img src="../images/coding-216-217/ik-rviz.png" alt="RViz view of the blue and yellow six joint arm in its final converged configuration" style="aspect-ratio: auto;">
+        <figcaption>The arm in RViz at its converged configuration.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/coding-216-217/ik-terminal.png" alt="Server terminal output listing position and orientation error every 50 iterations until convergence at iteration 1328" style="aspect-ratio: auto;">
+        <figcaption>Server output showing the position and orientation error shrinking until convergence.</figcaption>
+      </figure>
+    </div>
+
+    <nav class="next-project">
+      <a href="wheels-241.html">← W.H.E.E.L.S. Tread Traction Study</a>
+      <a href="../index.html#projects">All projects →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer wrap">
+    <a href="mailto:samuelscheinbach@gmail.com">samuelscheinbach@gmail.com</a>
+    <div class="links">
+      <a href="https://www.linkedin.com/in/samuel-scheinbach-8b779522b/">LinkedIn</a>
+      <a href="../files/resume.pdf">Resume (PDF)</a>
+    </div>
+  </footer>
+
+</body>
+</html>
