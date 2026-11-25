@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Passive Claw for Drosophibot II | Sam Scheinbach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header wrap">
+    <a class="logo" href="../index.html">sam.scheinbach</a>
+    <nav>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">← All projects</a>
+
+    <section class="project-hero">
+      <div class="eyebrow">NSF REU · NeuroMINT Lab, West Virginia University · Summer 2026</div>
+      <h1>Passive Claw for Drosophibot II</h1>
+      <p class="lead">A ground contact actuated foot and claw that lets Drosophibot II, a hexapod robot modeled on the fruit fly <em>Drosophila melanogaster</em>, grip loose and inclined terrain without a motor to close it.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>REU researcher: mechanism design, fabrication, electronics, testing</dd></div>
+        <div><dt>Mentor</dt><dd>Dr. Nicholas S. Szczecinski, NeuroMINT Lab</dd></div>
+        <div><dt>Tools</dt><dd>Fusion 360, SolidWorks, Markforged 3D printing, silicone casting, Arduino Mega</dd></div>
+      </dl>
+    </section>
+
+    <figure class="figure" style="max-width: 420px; margin-left: auto; margin-right: auto;">
+      <video src="../videos/claw-demo.mp4" poster="../images/drosophibot/claw-demo-poster.jpg" autoplay muted loop playsinline controls style="width: 100%; border-radius: 10px; background: #1C2126;" aria-label="Video of the Drosophibot II leg being pressed onto a table so the passive claw closes"></video>
+      <figcaption>Pressing the leg onto the table loads the compliant joint and closes the claw, with no motor driving it.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>The problem</h2>
+      <p>Legged robots could work in unstructured places like farms, forests, and disaster sites, but most use rigid, passive feet that grip only by resting on the ground, which limits them on rough or inclined terrain. Insects like <em>Drosophila</em> solve this with tarsal claws that engage and release automatically with every step. Drosophibot II still had rigid, passive feet, and my project was to give it a claw that works the same way.</p>
+
+      <h2>How it works</h2>
+      <p>The claw is driven by ground contact rather than a dedicated motor. I split the leg's rigid tibia and tarsus segment and added a compliant silicone joint at the ankle. When the leg touches down, ground contact deflects the joint and pulls a cable routed to the claw's pivot pin, so the claw closes as body weight loads the leg. Body weight holds the claw closed through stance. At the end of the step, a solenoid fires a brief pulse of about 50 ms to release the cable, and the silicone returns the claw to its open position for the next step.</p>
+      <p>The design replaced an earlier claw and gripper built by a previous REU student, and it went through a Bowden cable concept before arriving at the ground contact driven version. The leg was printed on a Markforged printer, with the silicone joint cast in place.</p>
+
+      <h2>Electronics</h2>
+      <p>I wired and debugged the solenoid driver around a TIP122 Darlington transistor with a 1N4004 flyback diode on a 12 V supply, driving a pulse duty DSML-0224-12 solenoid from an Arduino Mega. Along the way I tracked down a firmware bug that held the solenoid on for 2000 ms instead of a 50 ms pulse and was causing it to overheat.</p>
+
+      <h2>Testing and results</h2>
+      <p>I tested the mechanism on three substrates, gravel, mulch, and soil, with and without the claw, running ten trials per condition and measuring peak shear force and traction coefficient. The claw significantly increased peak shear resistance on all three surfaces. The traction coefficient, the ratio of shear to normal force, came out lower with the claw, which likely reflects the extra normal force needed to fully engage the closing mechanism.</p>
+
+      <figure class="figure" style="max-width: 560px;">
+        <img src="../images/drosophibot/test-setup.jpg" alt="The claw test setup: the leg mounted on a vertical slide with its claw resting in a 3D printed tray of mulch that sits on aluminum rails">
+        <figcaption>The test setup, with the leg mounted on a vertical slide above a tray of mulch, one of the three test substrates.</figcaption>
+      </figure>
+
+      <h2>Next steps</h2>
+      <p>The next stage is to integrate the claw into Drosophibot II's leg and verify reliable engagement and release across a full stride. Beyond that, I would characterize how joint stiffness affects claw closing force, test whether claw tip geometry and spacing can be tuned to specific terrains as stick insects' claws are, and use sensory feedback from the mechanism to adapt the robot's gait on complex terrain.</p>
+
+      <h2>Lab support</h2>
+      <p>Outside the claw itself, I set up communication with the lab's AMTI force plate, working through its RS-232 to USB adapter chain until the MiniAmp amplifier responded to queries from the NetForce software.</p>
+
+      <h2>Literature review</h2>
+      <p>Alongside the design work, I wrote a literature review of 28 sources on [topic, e.g. insect tarsal attachment and passive gripping in legged robots], revised over several rounds.</p>
+
+      <h2>Poster</h2>
+      <p>I presented the project as "Ground-Contact-Actuated Foot and Claw System for Robot Legged Locomotion on Inclined Terrain" at the 2026 West Virginia University Summer Symposium. The work was supported by NSF Award No. 2348288, REU Site: Undergraduate Robotics Research for Rural Appalachia.</p>
+    </div>
+
+    <figure class="figure" style="max-width: 520px; margin-left: auto; margin-right: auto;">
+      <img src="../images/drosophibot/poster-presentation.jpg" alt="Sam Scheinbach standing beside his research poster on the ground contact actuated foot and claw system at the WVU Summer Symposium">
+      <figcaption>Presenting the poster at the WVU Summer Symposium.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Gallery</h2>
+    </div>
+
+    <div class="gallery">
+      <!--
+      <figure>
+        <img src="../images/drosophibot/cad.jpg" alt="CAD of the claw assembly">
+        <figcaption>Claw assembly in Fusion 360.</figcaption>
+      </figure>
+      -->
+      <div class="placeholder ratio-4x3">images/drosophibot/cad.jpg</div>
+      <div class="placeholder ratio-4x3">images/drosophibot/mockup.jpg</div>
+      <div class="placeholder ratio-4x3">images/drosophibot/circuit.jpg</div>
+    </div>
+
+    <nav class="next-project">
+      <a href="whisker-sensing.html">← Whisker Inspired Wake Sensing</a>
+      <a href="wheels-241.html">Next: W.H.E.E.L.S. Tread Traction Study →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer wrap">
+    <a href="mailto:samuelscheinbach@gmail.com">samuelscheinbach@gmail.com</a>
+    <div class="links">
+      <a href="https://github.com/sscheinb">GitHub</a>
+      <a href="https://www.linkedin.com/in/YOUR-LINKEDIN">LinkedIn</a>
+      <a href="../files/resume.pdf">Resume (PDF)</a>
+    </div>
+  </footer>
+
+</body>
+</html>
