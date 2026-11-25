@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whisker Inspired Wake Sensing | Sam Scheinbach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header wrap">
+    <a class="logo" href="../index.html">sam.scheinbach</a>
+    <nav>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">← All projects</a>
+
+    <section class="project-hero">
+      <div class="eyebrow">Hydrodynamics Lab · 2025 to present</div>
+      <h1>Whisker Inspired Wake Sensing</h1>
+      <p class="lead">Seals can track the wakes of swimming fish with their whiskers alone. In the University of Rochester Hydrodynamics Lab, I help build and test biomimetic whisker sensors that do the same for underwater robots.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Mechanical Engineering Intern</dd></div>
+        <div><dt>Mentor</dt><dd>Dr. Jessica Shang</dd></div>
+        <div><dt>Tools</dt><dd>Fusion 360, MATLAB, water channel</dd></div>
+      </dl>
+    </section>
+
+    <figure class="figure">
+      <video src="../videos/fin-wake.mp4" poster="../images/whisker-sensing/fin-wake-poster.jpg" autoplay muted loop playsinline controls style="width: 100%; border-radius: 10px; background: #1C2126;" aria-label="Video of the pitching foil oscillating in the water channel while red and blue dye traces the vortices in its wake"></video>
+      <figcaption>The pitching foil oscillating in the water channel, with red and blue dye tracing the vortices it sheds into its wake.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>What I worked on</h2>
+      <p>I fabricated biomimetic seal whiskers and collected experimental data to analyze how hydrodynamic wake patterns can be used to tell objects apart. In Summer 2025, I designed a motorized airfoil system in Fusion 360 and programmed the water channel control and data acquisition system in MATLAB.</p>
+    </div>
+
+    <figure class="figure" style="max-width: 380px; margin-left: auto; margin-right: auto;">
+      <img src="../images/whisker-sensing/airfoil-cad.jpg" alt="Fusion 360 model of the motorized airfoil system: a servo on a mounting plate drives a vertical shaft that holds the foil, on a frame of aluminum extrusion">
+      <figcaption>My Fusion 360 model of the motorized system that drives the pitching foil. A servo on the mounting plate turns the shaft that holds the foil, and the frame mounts to aluminum extrusion above the channel.</figcaption>
+    </figure>
+
+    <figure class="figure" style="max-width: 420px; margin-left: auto; margin-right: auto;">
+      <video src="../videos/whiskers-flow.mp4" poster="../images/whisker-sensing/whiskers-flow-poster.jpg" autoplay muted loop playsinline controls style="width: 100%; border-radius: 10px; background: #1C2126;" aria-label="Video of a row of biomimetic whiskers hanging in the water channel and bending in the flow"></video>
+      <figcaption>Biomimetic whiskers in the water channel, bending and vibrating in the flow.</figcaption>
+    </figure>
+
+    <div class="prose">      <p>I also debugged the MATLAB pipeline we use for FFT analysis of the whisker strain signals. The root cause turned out to be samples building up in the DAQ buffer, because the loop read only one sample per cycle while the hardware sampled at 800 Hz.</p>
+    </div>
+
+    <figure class="figure">
+      <img src="../images/whisker-sensing/fft-sensors.png" alt="Grid of nine FFT plots, one per whisker sensor, showing streamwise and crosswise amplitude against frequency from 0 to 40 Hz with dominant peaks marked">
+      <figcaption>FFT of the signals from all nine whisker sensors, with streamwise and crosswise components and the dominant peaks marked. Most of the response sits below about 10 Hz.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>The experiment</h2>
+      <p>Each whisker sensor is a resin printed whisker mounted on a PDMS base with two embedded strain gauges, one for streamwise and one for crosswise strain. We placed an array of nine sensors in the channel's 60 by 15 by 20 inch test section, downstream of either a stationary cylinder, which sheds a drag producing Kármán vortex street, or the pitching foil, which sheds a thrust producing reverse Kármán street. The foil's pitching frequency and angle were set so both objects had a Strouhal number near 0.2, and the array was tested at three distances downstream of each.</p>
+      <p>We applied spectral proper orthogonal decomposition (SPOD) to the strain data to find the dominant frequencies and structures each wake imprints on the array. SPOD picked out a 0.93 Hz peak for the cylinder, close to the predicted 0.97 Hz, and recovered the foil's pitching frequency along with its harmonics. The foil produced higher strains overall, while the cylinder produced more crosswise than streamwise strain and a clear phase reversal across the center of the array. The reconstructed strain maps did not yet separate the two vortex streets, which is the focus of ongoing work.</p>
+
+      <h2>Presentations and papers</h2>
+      <ul>
+        <li>"Wake-Induced Vibrations of a Whisker-Inspired Sensor Array." Poster, APS Division of Fluid Dynamics Annual Meeting, 2025. Second author, with first author Sandhya Vaidyanathan.</li>
+        <li>"Feel the swirl: How whisker bending signals can encode vortices for underwater perception." Co-author, manuscript under review.</li>
+      </ul>
+    </div>
+
+    <figure class="figure">
+      <a href="../files/apsdfd-2025-poster.pdf"><img src="../images/whisker-sensing/dfd-poster.jpg" alt="APS DFD 2025 poster titled Wake-Induced Vibrations of a Whisker-Inspired Sensor Array, with sections on the introduction, experimental setup, SPOD analysis, results, and conclusions"></a>
+      <figcaption>APS DFD 2025 poster. Click to open the full resolution PDF.</figcaption>
+    </figure>
+
+    <div class="prose">
+
+      <h2>Gallery</h2>
+    </div>
+
+    <div class="gallery">
+      <!--
+      <figure>
+        <img src="../images/whisker-sensing/whiskers.jpg" alt="Fabricated seal whisker models">
+        <figcaption>Fabricated whisker models.</figcaption>
+      </figure>
+      -->
+      <figure>
+        <img src="../images/whisker-sensing/water-channel.jpg" alt="Side view of the water channel's glass test section with an aluminum gantry mounted above it">
+        <figcaption>The water channel's test section, with the overhead gantry that holds models and sensors above the flow.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/whisker-sensing/channel-test-section.jpg" alt="View looking down the length of the test section toward the gantry, with a rod suspended in the water">
+        <figcaption>Looking down the test section toward the gantry, with a rod suspended in the flow.</figcaption>
+      </figure>    </div>
+
+    <nav class="next-project">
+      <a href="lunabotics.html">← UR Robotics Club</a>
+      <a href="drosophibot.html">Next: Passive Claw for Drosophibot II →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer wrap">
+    <a href="mailto:samuelscheinbach@gmail.com">samuelscheinbach@gmail.com</a>
+    <div class="links">
+      <a href="https://github.com/sscheinb">GitHub</a>
+      <a href="https://www.linkedin.com/in/YOUR-LINKEDIN">LinkedIn</a>
+      <a href="../files/resume.pdf">Resume (PDF)</a>
+    </div>
+  </footer>
+
+</body>
+</html>
