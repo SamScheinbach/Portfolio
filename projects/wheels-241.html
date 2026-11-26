@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>W.H.E.E.L.S. Tread Traction Study | Sam Scheinbach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="site-header wrap">
+    <a class="logo" href="../index.html">sam.scheinbach</a>
+    <nav>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <a class="back" href="../index.html#projects">← All projects</a>
+
+    <section class="project-hero">
+      <div class="eyebrow">ME 241 Mechanics Lab · Spring 2026</div>
+      <h1>W.H.E.E.L.S.: Tread Traction on Lunar Regolith</h1>
+      <p class="lead">How does tread geometry affect a wheel's traction on loose, sandy terrain? Our five person team built a 2 meter single wheel testbed to compare 3D printed tread patterns for the UR Robotics Club's Lunabotics rover.</p>
+      <dl class="facts">
+        <div><dt>My role</dt><dd>Electronics housing design, 3D printing lead, data acquisition</dd></div>
+        <div><dt>Team</dt><dd>Ulizes Atlixqueno, Joshua Chou, Pablo Guiader, Sam Scheinbach, Jerome Yau</dd></div>
+        <div><dt>Tools</dt><dd>Arduino Mega, MATLAB, 3D printing in PLA</dd></div>
+      </dl>
+    </section>
+
+    <iframe class="video" src="https://www.youtube.com/embed/GPfZr5yHTuA" title="W.H.E.E.L.S. single wheel testbed: tread traction trial" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <div class="prose">
+      <h2>Motivation</h2>
+      <p>The UR Robotics Club's rover for NASA Lunabotics 2025 got stuck in lunar regolith simulant, and competing teams use a wide range of wheel designs with little agreement on what works best. We set out to test whether tread geometry measurably changes traction on granular terrain. Our hypothesis was that a V shaped tread would slip the least and be the most efficient, since its shape should funnel sand toward the center of the wheel and compact it.</p>
+
+      <h2>Testbed</h2>
+      <p>The rig is a 2 m by 20 cm aluminum extrusion frame over a sealed plywood and acrylic bed holding 30 L of sand. A sliding carriage on two linear rails carries the drive module and applies a constant 10 lb vertical load, while letting the wheel rise and fall freely with the terrain. Each wheel is a reusable 3D printed base with five interchangeable tread inserts, so patterns can be swapped between trials without reprinting the whole wheel. We tested straight, V shaped, and offset V shaped treads against a smooth control wheel.</p>
+
+      <figure class="figure">
+        <img src="../images/wheels-241/testbed.jpg" alt="The assembled single wheel testbed with labels on the e-box, sliding rail, 3D printed wheel hub and inserts, 2020 aluminum extrusion, plywood covers, and laser cut acrylic panels">
+        <figcaption>The assembled testbed with its main components labeled.</figcaption>
+      </figure>
+
+      <figure class="figure" style="max-width: 513px;">
+        <img src="../images/wheels-241/cad-early.jpg" alt="Earlier CAD model of the testbed frame, rails, carriage plate, and sand bed">
+        <figcaption>An earlier version of the CAD model, from the team's February 2026 progress update.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="../images/wheels-241/rig-lab.jpg" alt="The finished testbed in the lab, with the wheel resting in the sand bed and a bench power supply and laptop on the table behind it">
+        <figcaption>The finished testbed set up for trials, powered by a 12 V bench supply and run from MATLAB on the laptop behind it.</figcaption>
+      </figure>
+
+      <h2>Electronics and data acquisition</h2>
+      <p>An Arduino Mega reads a VL53L0X time of flight sensor for the carriage position, the motor's quadrature encoder for wheel angle, and an INA219 sensor for motor current, and drives the motor through an L298N driver. MATLAB communicates with the Arduino directly and logs every run, then computes the slip ratio and traction efficiency over the steady state portion of each run. Each tread pattern was tested in nine runs across three printed wheel sets, so variation from printing shows up in the uncertainty instead of hiding as a bias.</p>
+
+
+      <figure class="figure">
+        <img src="../images/wheels-241/matlab-run.jpg" alt="MATLAB during a trial, with live plots of bus voltage, current, encoder angle, and distance, and per sample readings in the command window">
+        <figcaption>A trial in progress. MATLAB plots voltage, current, encoder angle, and carriage distance live and stops the wheel when it reaches the end of the rig.</figcaption>
+      </figure>
+
+      <h2>My contributions</h2>
+      <p>I designed the housing for the electronics, led the 3D printing of the wheels and tread sets, took part in data acquisition, and wrote the abstract of the final report. The 3D printed housing rides on the carriage and holds the Arduino Mega, the motor driver, and the sensor breadboard, with slots in the walls for routing cables to the motor and sensors.</p>
+
+      <figure class="figure" style="max-width: 480px;">
+        <img src="../images/wheels-241/electronics-box.jpg" alt="Top down view of the open 3D printed electronics housing containing an Arduino Mega, a red motor driver board, and a small breadboard">
+        <figcaption>The electronics housing I designed, shown open with the Arduino Mega, motor driver, and breadboard installed.</figcaption>
+      </figure>
+
+      <h2>Results</h2>
+      <p>The V shaped tread had the lowest mean slip, as we predicted, but the differences between the three patterns were within the 95% confidence intervals, so none of them was clearly better on slip or efficiency. Slip stayed low for every pattern, at roughly 10% or less. The clearest result was in energy use: the straight tread consumed significantly more energy than either V pattern, which matched our observation that it stalled more often. Every tread pattern was also significantly more efficient than the smooth wheel, which suggests that having treads at all matters more than their exact shape.</p>
+
+  
+
+      <p>The main source of uncertainty was how we estimated the friction force, so future versions would add a force and torque sensor on the drive module to measure pullbar force continuously, and would track stall frequency and sinkage as additional metrics.</p>
+
+      <h2>Final report</h2>
+      <p>Our full write-up, "Evaluating the Tractional Performance of Non-Pneumatic Tread Patterns Over Lunar Surfaces," covers the testbed design, methods, uncertainty analysis, and results in detail.</p>
+      <p><a href="../files/me241-final-report.pdf">Read the final report (PDF)</a></p>
+
+      <h2>Poster</h2>
+      <p>We presented the project as a research poster for ME 241 in Spring 2026.</p>
+    </div>
+
+    <figure class="figure">
+      <img src="../images/wheels-241/poster.jpg" alt="W.H.E.E.L.S. research poster with background, hypothesis, methods, electronics diagram, testbed photo, results charts, and conclusions">
+      <figcaption>W.H.E.E.L.S. poster, ME 241 Mechanics Lab, Spring 2026.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="../images/wheels-241/poster-presentation.jpg" alt="Sam Scheinbach standing beside the W.H.E.E.L.S. poster at the poster session, with a test wheel on the table">
+      <figcaption>Presenting the poster, with one of our test wheels on display.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Gallery</h2>
+    </div>
+
+    <div class="gallery">
+      <figure>
+        <img src="../images/wheels-241/wheel-assembly.jpg" alt="Two assembled wheels with different tread patterns">
+        <figcaption>Assembled wheels with interchangeable tread inserts.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="../images/wheels-241/rover-stuck.jpg" alt="UR Robotics Club lunar rover in regolith simulant">
+        <figcaption>The club's Lunabotics rover stuck in regolith simulant, which motivated the project.</figcaption>
+      </figure>
+    </div>
+
+    <nav class="next-project">
+      <a href="drosophibot.html">← Passive Claw for Drosophibot II</a>
+      <a href="coding-216-217.html">Next: Robotics Coding Projects →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer wrap">
+    <a href="mailto:samuelscheinbach@gmail.com">samuelscheinbach@gmail.com</a>
+    <div class="links">
+      <a href="https://www.linkedin.com/in/samuel-scheinbach-8b779522b/">LinkedIn</a>
+      <a href="../files/resume.pdf">Resume (PDF)</a>
+    </div>
+  </footer>
+
+</body>
+</html>
